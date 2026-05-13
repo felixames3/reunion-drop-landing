@@ -34,22 +34,23 @@
     .bg {
       position: fixed;
       inset: 0;
-      background-image: url('artist.png');
+      background-image: url('bg.jpg');
       background-size: cover;
-      background-position: center 20%;
+      background-position: center 30%;
       z-index: 0;
     }
 
+    /* Gradient overlay — dark on top and bottom, lighter in middle */
     .bg::after {
       content: '';
       position: absolute;
       inset: 0;
       background:
         linear-gradient(to bottom,
-          rgba(10, 8, 5, 0.88) 0%,
-          rgba(10, 8, 5, 0.65) 30%,
-          rgba(10, 8, 5, 0.70) 65%,
-          rgba(10, 8, 5, 0.95) 100%
+          rgba(10, 8, 5, 0.82) 0%,
+          rgba(10, 8, 5, 0.55) 35%,
+          rgba(10, 8, 5, 0.60) 60%,
+          rgba(10, 8, 5, 0.90) 100%
         );
     }
 
@@ -73,7 +74,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 80px 24px;
+      padding: 60px 24px;
     }
 
     /* ---- TOP MARK ---- */
@@ -99,6 +100,7 @@
       text-align: center;
       max-width: 480px;
       width: 100%;
+      gap: 0;
     }
 
     .artist-name {
@@ -108,55 +110,17 @@
       letter-spacing: 0.4em;
       text-transform: uppercase;
       color: var(--bone-dim);
-      margin-bottom: 28px;
+      margin-bottom: 18px;
     }
 
-    /* ---- VINYL COVER ---- */
-    .cover-wrap {
-      position: relative;
-      width: min(340px, 82vw);
-      margin-bottom: 36px;
-    }
-
-    .cover-wrap::before {
-      content: '';
-      position: absolute;
-      inset: -1px;
-      background: rgba(240, 234, 224, 0.06);
-      z-index: -1;
-    }
-
-    .cover-wrap::after {
-      content: '';
-      position: absolute;
-      bottom: -24px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 70%;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.55);
-      filter: blur(18px);
-      border-radius: 50%;
-      z-index: -1;
-    }
-
-    .cover-img {
-      display: block;
-      width: 100%;
-      aspect-ratio: 1;
-      object-fit: cover;
-      border: 0.5px solid rgba(240, 234, 224, 0.12);
-    }
-
-    /* ---- TEXT ---- */
     .album-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(28px, 6vw, 44px);
+      font-size: clamp(36px, 7vw, 58px);
       font-weight: 300;
-      line-height: 1.15;
+      line-height: 1.1;
       color: var(--bone);
       letter-spacing: 0.03em;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
 
     .drop-label {
@@ -166,7 +130,7 @@
       letter-spacing: 0.35em;
       text-transform: uppercase;
       color: var(--bone-faint);
-      margin-bottom: 36px;
+      margin-bottom: 40px;
     }
 
     /* Hairline rule */
@@ -174,78 +138,99 @@
       width: 40px;
       height: 0.5px;
       background: var(--bone-faint);
-      margin-bottom: 36px;
+      margin-bottom: 40px;
+    }
+
+    .body-copy {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--bone-dim);
+      letter-spacing: 0.04em;
+      margin-bottom: 44px;
     }
 
     /* ---- EMAIL FORM ---- */
-    .email-form {
+    .form {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 12px;
+      gap: 14px;
       width: 100%;
-      max-width: 280px;
+      max-width: 340px;
     }
 
     .email-input {
       width: 100%;
-      background: transparent;
-      border: 0.5px solid rgba(240, 234, 224, 0.35);
+      background: rgba(240, 234, 224, 0.06);
+      border: 0.5px solid rgba(240, 234, 224, 0.25);
+      border-radius: 0;
       padding: 14px 18px;
       font-family: 'Cormorant Garamond', serif;
       font-size: 15px;
-      font-weight: 300;
       letter-spacing: 0.06em;
       color: var(--bone);
       outline: none;
-      transition: border-color 0.25s;
+      transition: border-color 0.25s, background 0.25s;
       text-align: center;
+      -webkit-appearance: none;
     }
 
     .email-input::placeholder {
       color: rgba(240, 234, 224, 0.3);
-      font-style: italic;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      text-transform: uppercase;
     }
 
     .email-input:focus {
-      border-color: rgba(240, 234, 224, 0.65);
+      border-color: rgba(240, 234, 224, 0.5);
+      background: rgba(240, 234, 224, 0.09);
     }
 
-    .notify-btn {
+    .submit-btn {
       width: 100%;
       background: transparent;
-      border: 0.5px solid rgba(240, 234, 224, 0.45);
-      padding: 15px 24px;
+      border: 0.5px solid rgba(240, 234, 224, 0.4);
+      padding: 13px 18px;
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 11px;
       font-weight: 400;
-      letter-spacing: 0.38em;
+      letter-spacing: 0.35em;
       text-transform: uppercase;
       color: var(--bone);
       cursor: pointer;
       transition: background 0.25s, border-color 0.25s;
     }
 
-    .notify-btn:hover {
+    .submit-btn:hover {
       background: rgba(240, 234, 224, 0.08);
-      border-color: rgba(240, 234, 224, 0.7);
+      border-color: rgba(240, 234, 224, 0.65);
     }
 
-    .notify-btn:disabled {
-      opacity: 0.5;
-      cursor: default;
+    .submit-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
 
-    /* ---- THANK YOU STATE ---- */
-    .thank-you {
-      display: none;
+    /* ---- STATES ---- */
+    .status-msg {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(18px, 4vw, 24px);
-      font-weight: 300;
-      font-style: italic;
-      letter-spacing: 0.06em;
+      font-size: 13px;
+      letter-spacing: 0.1em;
       color: var(--bone-dim);
       text-align: center;
+      min-height: 20px;
+      font-style: italic;
+    }
+
+    .status-msg.success {
+      color: rgba(210, 195, 160, 0.8);
+    }
+
+    .status-msg.error {
+      color: rgba(200, 160, 130, 0.8);
     }
 
     /* ---- BOTTOM MARK ---- */
@@ -266,7 +251,7 @@
     /* ---- MOBILE ---- */
     @media (max-width: 480px) {
       .page { padding: 80px 28px 80px; }
-      .cover-wrap { width: min(300px, 88vw); }
+      .album-title { font-size: 40px; }
     }
   </style>
 </head>
@@ -281,66 +266,87 @@
     <div class="content">
 
       <div class="artist-name">Felix Ames</div>
-
-      <div class="cover-wrap">
-        <img class="cover-img" src="cover.png" alt="Did The Rain Stop? — Felix Ames">
-      </div>
-
       <h1 class="album-title">Did The Rain Stop?</h1>
-      <div class="drop-label">Something is coming</div>
+      <div class="drop-label">Reunion Drop 001</div>
 
       <div class="rule"></div>
 
-      <form class="email-form" id="emailForm" onsubmit="handleSubmit(event)">
+      <p class="body-copy">Vinyls coming soon</p>
+
+      <form class="form" id="waitlistForm">
         <input
           class="email-input"
           type="email"
           id="emailInput"
-          placeholder="your@email.com"
+          placeholder="Your email"
           required
           autocomplete="email"
         />
-        <button class="notify-btn" type="submit" id="submitBtn">
-          Notify Me
+        <button class="submit-btn" type="submit" id="submitBtn">
+          Join the List
         </button>
+        <div class="status-msg" id="statusMsg"></div>
       </form>
-
-      <p class="thank-you" id="thankYou">Thank you, talk soon! &lt;3</p>
 
     </div>
   </div>
 
   <div class="bottom-mark">Felix Ames</div>
 
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script>
-    // Replace with your deployed command center URL, e.g. https://your-app.vercel.app
-    const API_URL = 'https://www.reunionbyfelix.com/api/email-signup';
+    const SUPABASE_URL  = 'https://iefrawbiveavwcopmhtw.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllZnJhd2JpdmVhdndjb3BtaHR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxNjQ1NjgsImV4cCI6MjA4NDc0MDU2OH0.SQ9549OY6AqEhxjUS2Zj0lKQbInns34Z6P-RvBGcqDk';
 
-    async function handleSubmit(e) {
-      e.preventDefault();
+    let db;
 
-      const email = document.getElementById('emailInput').value.trim();
-      if (!email) return;
+    document.addEventListener('DOMContentLoaded', () => {
+      db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
-      const btn = document.getElementById('submitBtn');
-      btn.disabled = true;
+      document.getElementById('waitlistForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-      // Show thank you immediately
-      document.getElementById('emailForm').style.display = 'none';
-      document.getElementById('thankYou').style.display = 'block';
+        const email     = document.getElementById('emailInput').value.trim();
+        const btn       = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('statusMsg');
 
-      // Send to backend in the background (best-effort)
-      try {
-        await fetch(API_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, source: 'reunion-landing' }),
-        });
-      } catch (err) {
-        // Silent — user already sees thank you
-        console.error('Signup error:', err);
-      }
-    }
+        if (!email) return;
+
+        btn.disabled    = true;
+        btn.textContent = 'Adding...';
+        statusMsg.className   = 'status-msg';
+        statusMsg.textContent = '';
+
+        try {
+          const { error } = await db
+            .from('drop_waitlist')
+            .insert({ email, drop: 'reunion-001', signed_up_at: new Date().toISOString() });
+
+          if (error) {
+            if (error.code === '23505') {
+              statusMsg.className   = 'status-msg success';
+              statusMsg.textContent = "You're already on the list.";
+            } else {
+              statusMsg.className   = 'status-msg error';
+              statusMsg.textContent = 'Something went wrong. Try again.';
+              btn.disabled    = false;
+              btn.textContent = 'Join the List';
+            }
+          } else {
+            statusMsg.className   = 'status-msg success';
+            statusMsg.textContent = 'Thank you, talk soon! <3';
+            document.getElementById('emailInput').value = '';
+            btn.textContent = 'Done';
+          }
+        } catch (err) {
+          statusMsg.className   = 'status-msg error';
+          statusMsg.textContent = 'Something went wrong. Try again.';
+          btn.disabled    = false;
+          btn.textContent = 'Join the List';
+        }
+      });
+    });
   </script>
 
 </body>
