@@ -321,18 +321,16 @@
         try {
           const { error } = await db
             .from('drop_waitlist')
-            .insert({ email, drop: 'reunion-001', signed_up_at: new Date().toISOString() });
+            .upsert(
+              { email, drop: 'reunion-001', signed_up_at: new Date().toISOString() },
+              { onConflict: 'email', ignoreDuplicates: true }
+            );
 
           if (error) {
-            if (error.code === '23505') {
-              statusMsg.className   = 'status-msg success';
-              statusMsg.textContent = "You're already on the list.";
-            } else {
-              statusMsg.className   = 'status-msg error';
-              statusMsg.textContent = 'Something went wrong. Try again.';
-              btn.disabled    = false;
-              btn.textContent = 'Join the List';
-            }
+            statusMsg.className   = 'status-msg error';
+            statusMsg.textContent = 'Something went wrong. Try again.';
+            btn.disabled    = false;
+            btn.textContent = 'Join the List';
           } else {
             statusMsg.className   = 'status-msg success';
             statusMsg.textContent = 'Thank you, talk soon! <3';
