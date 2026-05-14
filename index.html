@@ -319,14 +319,13 @@
         statusMsg.textContent = '';
 
         try {
-          const { error } = await db
-            .from('drop_waitlist')
-            .upsert(
-              { email, drop: 'reunion-001', signed_up_at: new Date().toISOString() },
-              { onConflict: 'email', ignoreDuplicates: true }
-            );
+          const res = await fetch('https://reunion-command-center.vercel.app/api/email-signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, source: 'reunion-landing' }),
+          });
 
-          if (error) {
+          if (!res.ok) {
             statusMsg.className   = 'status-msg error';
             statusMsg.textContent = 'Something went wrong. Try again.';
             btn.disabled    = false;
