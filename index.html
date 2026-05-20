@@ -40,7 +40,6 @@
       z-index: 0;
     }
 
-    /* Gradient overlay — dark on top and bottom, lighter in middle */
     .bg::after {
       content: '';
       position: absolute;
@@ -100,7 +99,6 @@
       text-align: center;
       max-width: 480px;
       width: 100%;
-      gap: 0;
     }
 
     .artist-name {
@@ -133,7 +131,6 @@
       margin-bottom: 40px;
     }
 
-    /* Hairline rule */
     .rule {
       width: 40px;
       height: 0.5px;
@@ -151,17 +148,8 @@
       margin-bottom: 44px;
     }
 
-    /* ---- EMAIL FORM ---- */
-    .form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-      max-width: 340px;
-    }
-
-    .email-input {
+    /* ---- SHARED INPUT STYLE ---- */
+    .text-input {
       width: 100%;
       background: rgba(240, 234, 224, 0.06);
       border: 0.5px solid rgba(240, 234, 224, 0.25);
@@ -177,18 +165,19 @@
       -webkit-appearance: none;
     }
 
-    .email-input::placeholder {
+    .text-input::placeholder {
       color: rgba(240, 234, 224, 0.3);
       letter-spacing: 0.12em;
       font-size: 12px;
       text-transform: uppercase;
     }
 
-    .email-input:focus {
+    .text-input:focus {
       border-color: rgba(240, 234, 224, 0.5);
       background: rgba(240, 234, 224, 0.09);
     }
 
+    /* ---- BUTTONS ---- */
     .submit-btn {
       width: 100%;
       background: transparent;
@@ -214,7 +203,32 @@
       cursor: not-allowed;
     }
 
-    /* ---- STATES ---- */
+    /* Solid buy button — inverted for emphasis */
+    .buy-btn {
+      width: 100%;
+      max-width: 340px;
+      background: var(--bone);
+      border: 0.5px solid var(--bone);
+      padding: 16px 18px;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #0D0B08;
+      cursor: pointer;
+      transition: opacity 0.25s;
+      margin-bottom: 10px;
+    }
+
+    .buy-btn:hover { opacity: 0.88; }
+
+    .buy-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    /* ---- STATUS MESSAGES ---- */
     .status-msg {
       font-family: 'Cormorant Garamond', serif;
       font-size: 13px;
@@ -225,12 +239,62 @@
       font-style: italic;
     }
 
-    .status-msg.success {
-      color: rgba(210, 195, 160, 0.8);
+    .status-msg.success { color: rgba(210, 195, 160, 0.8); }
+    .status-msg.error   { color: rgba(200, 160, 130, 0.8); }
+
+    /* ---- WAITLIST FORM ---- */
+    .form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      max-width: 340px;
     }
 
-    .status-msg.error {
-      color: rgba(200, 160, 130, 0.8);
+    .consent-note {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 10px;
+      letter-spacing: 0.05em;
+      color: rgba(240, 234, 224, 0.18);
+      text-align: center;
+      line-height: 1.7;
+      margin-top: -4px;
+    }
+
+    /* ---- LIVE DROP SECTION ---- */
+    #liveDrop { display: none; width: 100%; align-items: center; flex-direction: column; }
+
+    .buy-status {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      color: var(--bone-dim);
+      font-style: italic;
+      min-height: 20px;
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .buy-status.error { color: rgba(200, 160, 130, 0.8); }
+
+    .future-drops {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding-top: 40px;
+      border-top: 0.5px solid rgba(240, 234, 224, 0.1);
+    }
+
+    .future-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 9px;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--bone-faint);
+      margin-bottom: 20px;
     }
 
     /* ---- BOTTOM MARK ---- */
@@ -271,79 +335,206 @@
 
       <div class="rule"></div>
 
-      <p class="body-copy">Vinyls coming soon. Be the first to know when they drop!</p>
+      <!-- =====================================================
+           PRE-DROP STATE
+           Shown when DROP_LIVE = false (see config below)
+      ====================================================== -->
+      <div id="preDrop">
+        <p class="body-copy">Vinyls coming soon.<br>Be the first to know when they drop.</p>
 
-      <form class="form" id="waitlistForm">
-        <input
-          class="email-input"
-          type="email"
-          id="emailInput"
-          placeholder="Your email"
-          required
-          autocomplete="email"
-        />
-        <button class="submit-btn" type="submit" id="submitBtn">
-          Join the List
-        </button>
-        <div class="status-msg" id="statusMsg"></div>
-      </form>
+        <form class="form" id="waitlistForm">
+          <input
+            class="text-input"
+            type="email"
+            id="emailInput"
+            placeholder="Your email"
+            required
+            autocomplete="email"
+          />
+          <input
+            class="text-input"
+            type="tel"
+            id="phoneInput"
+            placeholder="Phone (optional)"
+            autocomplete="tel"
+          />
+          <p class="consent-note">
+            By adding your number you agree to receive<br>
+            texts about future drops. Reply STOP to opt out.
+          </p>
+          <button class="submit-btn" type="submit" id="submitBtn">
+            Join the List
+          </button>
+          <div class="status-msg" id="statusMsg"></div>
+        </form>
+      </div>
+
+      <!-- =====================================================
+           LIVE DROP STATE
+           Shown when DROP_LIVE = true (see config below)
+      ====================================================== -->
+      <div id="liveDrop">
+        <p class="body-copy">Limited pressing. Ships in 2–3 weeks.</p>
+
+        <button class="buy-btn" id="buyBtn">Buy Now — $28</button>
+        <div class="buy-status" id="buyStatus"></div>
+
+        <div class="future-drops">
+          <div class="future-label">Stay updated on future drops</div>
+          <form class="form" id="futureForm">
+            <input
+              class="text-input"
+              type="email"
+              id="futureEmailInput"
+              placeholder="Your email"
+              required
+              autocomplete="email"
+            />
+            <button class="submit-btn" type="submit" id="futureSubmitBtn">
+              Notify Me
+            </button>
+            <div class="status-msg" id="futureStatusMsg"></div>
+          </form>
+        </div>
+      </div>
 
     </div>
   </div>
 
   <div class="bottom-mark">Felix Ames</div>
 
-  <!-- Supabase CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script>
-    const SUPABASE_URL  = 'https://iefrawbiveavwcopmhtw.supabase.co';
-    const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllZnJhd2JpdmVhdndjb3BtaHR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxNjQ1NjgsImV4cCI6MjA4NDc0MDU2OH0.SQ9549OY6AqEhxjUS2Zj0lKQbInns34Z6P-RvBGcqDk';
+    // =========================================================
+    // CONFIG — fill these in before going live
+    // =========================================================
 
-    let db;
+    const DROP_LIVE = false;
+    // Flip to true on drop day. Everything else switches automatically.
+
+    const SHOPIFY_DOMAIN = 'YOUR-STORE.myshopify.com';
+    // Where to find it: Shopify admin → Settings → Domains
+
+    const SHOPIFY_STOREFRONT_TOKEN = 'YOUR-STOREFRONT-ACCESS-TOKEN';
+    // Where to find it: Shopify admin → Settings → Apps and sales channels
+    //   → Develop apps → [your app] → API credentials → Storefront API access token
+    //   (Read access to products + checkout is all you need)
+
+    const PRODUCT_ID = 'gid://shopify/Product/YOUR-PRODUCT-ID';
+    // Where to find it: Shopify admin → Products → click your vinyl
+    //   → the URL ends in /products/XXXXXXX — wrap that number:
+    //   gid://shopify/Product/XXXXXXX
+
+    const VINYL_PRICE = '$28';
+    // Display only — Shopify controls the real price at checkout
+
+    // =========================================================
+    // END CONFIG
+    // =========================================================
+
+    const SIGNUP_URL = 'https://reunion-command-center.vercel.app/api/email-signup';
 
     document.addEventListener('DOMContentLoaded', () => {
-      db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 
+      if (DROP_LIVE) {
+        document.getElementById('preDrop').style.display  = 'none';
+        document.getElementById('liveDrop').style.display = 'flex';
+        document.getElementById('buyBtn').textContent = `Buy Now — ${VINYL_PRICE}`;
+        loadShopify();
+      }
+
+      // ---- Waitlist form (pre-drop) ----
       document.getElementById('waitlistForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        const email     = document.getElementById('emailInput').value.trim();
-        const btn       = document.getElementById('submitBtn');
-        const statusMsg = document.getElementById('statusMsg');
-
+        const email  = document.getElementById('emailInput').value.trim();
+        const phone  = document.getElementById('phoneInput').value.trim();
+        const btn    = document.getElementById('submitBtn');
+        const status = document.getElementById('statusMsg');
         if (!email) return;
+        await submitSignup({ email, phone, source: 'reunion-landing-waitlist', btn, status });
+      });
+
+      // ---- Future drops form (live state) ----
+      document.getElementById('futureForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email  = document.getElementById('futureEmailInput').value.trim();
+        const btn    = document.getElementById('futureSubmitBtn');
+        const status = document.getElementById('futureStatusMsg');
+        if (!email) return;
+        await submitSignup({ email, source: 'reunion-landing-futuredrops', btn, status });
+      });
+
+    });
+
+    // ---- Shared signup handler ----
+    async function submitSignup({ email, phone, source, btn, status }) {
+      btn.disabled    = true;
+      btn.textContent = 'Adding...';
+      status.className   = 'status-msg';
+      status.textContent = '';
+
+      const body = { email, source };
+      if (phone) body.phone = phone;
+
+      try {
+        const res = await fetch(SIGNUP_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        if (!res.ok) throw new Error('bad response');
+
+        status.className   = 'status-msg success';
+        status.textContent = 'Thank you, talk soon! <3';
+        document.getElementById('emailInput') && (document.getElementById('emailInput').value = '');
+        document.getElementById('futureEmailInput') && (document.getElementById('futureEmailInput').value = '');
+        btn.textContent = 'Done';
+      } catch {
+        status.className   = 'status-msg error';
+        status.textContent = 'Something went wrong. Try again.';
+        btn.disabled    = false;
+        btn.textContent = btn.dataset.label || 'Join the List';
+      }
+    }
+
+    // ---- Shopify Buy flow ----
+    function loadShopify() {
+      const script  = document.createElement('script');
+      script.src    = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+      script.onload = initShopify;
+      document.head.appendChild(script);
+    }
+
+    function initShopify() {
+      const client = ShopifyBuy.buildClient({
+        domain:                SHOPIFY_DOMAIN,
+        storefrontAccessToken: SHOPIFY_STOREFRONT_TOKEN,
+      });
+
+      document.getElementById('buyBtn').addEventListener('click', async () => {
+        const btn    = document.getElementById('buyBtn');
+        const status = document.getElementById('buyStatus');
 
         btn.disabled    = true;
-        btn.textContent = 'Adding...';
-        statusMsg.className   = 'status-msg';
-        statusMsg.textContent = '';
+        btn.textContent = 'Opening checkout...';
+        status.className   = 'buy-status';
+        status.textContent = '';
 
         try {
-          const res = await fetch('https://reunion-command-center.vercel.app/api/email-signup', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, source: 'reunion-landing' }),
-          });
-
-          if (!res.ok) {
-            statusMsg.className   = 'status-msg error';
-            statusMsg.textContent = 'Something went wrong. Try again.';
-            btn.disabled    = false;
-            btn.textContent = 'Join the List';
-          } else {
-            statusMsg.className   = 'status-msg success';
-            statusMsg.textContent = 'Thank you, talk soon! <3';
-            document.getElementById('emailInput').value = '';
-            btn.textContent = 'Done';
-          }
+          const product     = await client.product.fetch(PRODUCT_ID);
+          const variantId   = product.variants[0].id;
+          const checkout    = await client.checkout.create();
+          const lineItems   = [{ variantId, quantity: 1 }];
+          const updated     = await client.checkout.addLineItems(checkout.id, lineItems);
+          window.location.href = updated.webUrl;
         } catch (err) {
-          statusMsg.className   = 'status-msg error';
-          statusMsg.textContent = 'Something went wrong. Try again.';
+          status.className   = 'buy-status error';
+          status.textContent = 'Could not open checkout. Try again.';
           btn.disabled    = false;
-          btn.textContent = 'Join the List';
+          btn.textContent = `Buy Now — ${VINYL_PRICE}`;
         }
       });
-    });
+    }
   </script>
 
 </body>
