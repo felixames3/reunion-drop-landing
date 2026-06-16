@@ -411,20 +411,10 @@
     const DROP_LIVE = false;
     // Flip to true on drop day. Everything else switches automatically.
 
-    const SHOPIFY_DOMAIN = 'YOUR-STORE.myshopify.com';
-    // Where to find it: Shopify admin → Settings → Domains
+    const CHECKOUT_URL = 'https://qcj2dh-wk.myshopify.com/cart/47291145781379:1';
+    // Direct checkout link — sends buyer straight to Shopify checkout
 
-    const SHOPIFY_STOREFRONT_TOKEN = 'YOUR-STOREFRONT-ACCESS-TOKEN';
-    // Where to find it: Shopify admin → Settings → Apps and sales channels
-    //   → Develop apps → [your app] → API credentials → Storefront API access token
-    //   (Read access to products + checkout is all you need)
-
-    const PRODUCT_ID = 'gid://shopify/Product/YOUR-PRODUCT-ID';
-    // Where to find it: Shopify admin → Products → click your vinyl
-    //   → the URL ends in /products/XXXXXXX — wrap that number:
-    //   gid://shopify/Product/XXXXXXX
-
-    const VINYL_PRICE = '$28';
+    const VINYL_PRICE = '$35.95';
     // Display only — Shopify controls the real price at checkout
 
     // =========================================================
@@ -439,7 +429,9 @@
         document.getElementById('preDrop').style.display  = 'none';
         document.getElementById('liveDrop').style.display = 'flex';
         document.getElementById('buyBtn').textContent = `Buy Now — ${VINYL_PRICE}`;
-        loadShopify();
+        document.getElementById('buyBtn').addEventListener('click', () => {
+          window.location.href = CHECKOUT_URL;
+        });
       }
 
       // ---- Waitlist form (pre-drop) ----
@@ -497,44 +489,6 @@
       }
     }
 
-    // ---- Shopify Buy flow ----
-    function loadShopify() {
-      const script  = document.createElement('script');
-      script.src    = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
-      script.onload = initShopify;
-      document.head.appendChild(script);
-    }
-
-    function initShopify() {
-      const client = ShopifyBuy.buildClient({
-        domain:                SHOPIFY_DOMAIN,
-        storefrontAccessToken: SHOPIFY_STOREFRONT_TOKEN,
-      });
-
-      document.getElementById('buyBtn').addEventListener('click', async () => {
-        const btn    = document.getElementById('buyBtn');
-        const status = document.getElementById('buyStatus');
-
-        btn.disabled    = true;
-        btn.textContent = 'Opening checkout...';
-        status.className   = 'buy-status';
-        status.textContent = '';
-
-        try {
-          const product     = await client.product.fetch(PRODUCT_ID);
-          const variantId   = product.variants[0].id;
-          const checkout    = await client.checkout.create();
-          const lineItems   = [{ variantId, quantity: 1 }];
-          const updated     = await client.checkout.addLineItems(checkout.id, lineItems);
-          window.location.href = updated.webUrl;
-        } catch (err) {
-          status.className   = 'buy-status error';
-          status.textContent = 'Could not open checkout. Try again.';
-          btn.disabled    = false;
-          btn.textContent = `Buy Now — ${VINYL_PRICE}`;
-        }
-      });
-    }
   </script>
 
 </body>
