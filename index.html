@@ -79,16 +79,18 @@
     /* ---- TOP MARK ---- */
     .top-mark {
       position: fixed;
-      top: 32px;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 24px 0 18px;
       z-index: 10;
       font-family: 'Cormorant Garamond', serif;
       font-size: 11px;
       letter-spacing: 0.28em;
       color: var(--bone-dim);
-      white-space: nowrap;
+      text-align: center;
       text-transform: uppercase;
+      background: linear-gradient(to bottom, #0D0B08 60%, rgba(13, 11, 8, 0));
     }
 
     /* ---- MAIN CONTENT ---- */
@@ -97,7 +99,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      max-width: 480px;
+      max-width: 1000px;
       width: 100%;
     }
 
@@ -278,86 +280,29 @@
 
     .buy-status.error { color: rgba(200, 160, 130, 0.8); }
 
-    .shopify-buy-wrap {
-      width: 100%;
-      max-width: 440px;
-      margin-bottom: 44px;
-    }
-
-    .packaging-toggle {
+    .product-showcase {
       display: flex;
-      align-items: center;
-      gap: 8px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px;
-      font-weight: 300;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--bone-dim);
-      padding: 0;
-      margin-bottom: 44px;
-      transition: color 0.25s;
-    }
-
-    .packaging-toggle:hover {
-      color: var(--bone);
-    }
-
-    .packaging-toggle .arrow {
-      font-size: 11px;
-      transform: translateY(-0.5px);
-    }
-
-    .packaging-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 100;
-      align-items: center;
+      flex-wrap: wrap;
       justify-content: center;
-      padding: 40px 24px;
-      background: rgba(10, 8, 5, 0.92);
-    }
-
-    .packaging-modal.open {
-      display: flex;
-    }
-
-    .packaging-modal-inner {
-      position: relative;
+      align-items: flex-start;
+      gap: 28px;
       width: 100%;
-      max-width: 560px;
+      margin-bottom: 44px;
     }
 
-    .packaging-modal-close {
-      position: absolute;
-      top: -36px;
-      right: 0;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: 'Barlow Condensed', sans-serif;
-      font-size: 10px;
-      font-weight: 300;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--bone-dim);
-      padding: 8px;
-      transition: color 0.25s;
-    }
-
-    .packaging-modal-close:hover {
-      color: var(--bone);
-    }
-
-    .packaging-modal-img {
+    .packaging-side-img {
       display: block;
+      flex: 1 1 380px;
+      max-width: 460px;
       width: 100%;
       height: auto;
-      border: 0.5px solid rgba(240, 234, 224, 0.15);
+      border: 0.5px solid rgba(240, 234, 224, 0.12);
+    }
+
+    .shopify-buy-wrap {
+      flex: 1 1 380px;
+      max-width: 460px;
+      width: 100%;
     }
 
     .future-drops {
@@ -382,16 +327,18 @@
     /* ---- BOTTOM MARK ---- */
     .bottom-mark {
       position: fixed;
-      bottom: 28px;
-      left: 50%;
-      transform: translateX(-50%);
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 18px 0 22px;
       z-index: 10;
       font-family: 'Cormorant Garamond', serif;
       font-size: 9px;
       letter-spacing: 0.25em;
       color: rgba(240, 234, 224, 0.18);
-      white-space: nowrap;
+      text-align: center;
       text-transform: uppercase;
+      background: linear-gradient(to top, #0D0B08 60%, rgba(13, 11, 8, 0));
     }
 
     /* ---- MOBILE ---- */
@@ -458,11 +405,10 @@
       <div id="liveDrop">
         <p class="body-copy">This is a preorder. All vinyls will be signed by Felix.<br>Estimated to ship in 90 days due to manufacturing time.</p>
 
-        <div class="shopify-buy-wrap" id="product-component-1784915563093"></div>
-
-        <button class="packaging-toggle" id="packagingToggle" type="button">
-          View Full Packaging Design <span class="arrow">&#8595;</span>
-        </button>
+        <div class="product-showcase">
+          <img class="packaging-side-img" src="packaging.png" alt="Did The Rain Stop? — full vinyl packaging: cover, inner sleeve, front and back panels" />
+          <div class="shopify-buy-wrap" id="product-component-1784915563093"></div>
+        </div>
 
         <div class="future-drops">
           <div class="future-label">Stay updated on future drops</div>
@@ -487,13 +433,6 @@
   </div>
 
   <div class="bottom-mark">Felix Ames</div>
-
-  <div class="packaging-modal" id="packagingModal">
-    <div class="packaging-modal-inner">
-      <button class="packaging-modal-close" id="packagingModalClose" type="button">Close &times;</button>
-      <img class="packaging-modal-img" src="packaging.png" alt="Did The Rain Stop? — full vinyl packaging: cover, inner sleeve, front and back panels" />
-    </div>
-  </div>
 
   <script>
     // =========================================================
@@ -543,26 +482,6 @@
         if (!email) return;
         await submitSignup({ email, source: 'reunion-landing-futuredrops', btn, status });
       });
-
-      // ---- Packaging design modal ----
-      const packagingToggle = document.getElementById('packagingToggle');
-      const packagingModal  = document.getElementById('packagingModal');
-      const packagingClose  = document.getElementById('packagingModalClose');
-
-      if (packagingToggle && packagingModal) {
-        packagingToggle.addEventListener('click', () => {
-          packagingModal.classList.add('open');
-        });
-        packagingClose.addEventListener('click', () => {
-          packagingModal.classList.remove('open');
-        });
-        packagingModal.addEventListener('click', (e) => {
-          if (e.target === packagingModal) packagingModal.classList.remove('open');
-        });
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') packagingModal.classList.remove('open');
-        });
-      }
 
     });
 
