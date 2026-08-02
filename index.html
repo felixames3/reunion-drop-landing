@@ -284,30 +284,80 @@
       margin-bottom: 44px;
     }
 
-    .packaging-preview {
+    .packaging-toggle {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      width: 100%;
-      max-width: 440px;
-      margin-bottom: 44px;
-    }
-
-    .packaging-label {
+      gap: 8px;
+      background: none;
+      border: none;
+      cursor: pointer;
       font-family: 'Barlow Condensed', sans-serif;
-      font-size: 9px;
+      font-size: 10px;
       font-weight: 300;
       letter-spacing: 0.35em;
       text-transform: uppercase;
-      color: var(--bone-faint);
-      margin-bottom: 16px;
+      color: var(--bone-dim);
+      padding: 0;
+      margin-bottom: 44px;
+      transition: color 0.25s;
     }
 
-    .packaging-img {
+    .packaging-toggle:hover {
+      color: var(--bone);
+    }
+
+    .packaging-toggle .arrow {
+      font-size: 11px;
+      transform: translateY(-0.5px);
+    }
+
+    .packaging-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 24px;
+      background: rgba(10, 8, 5, 0.92);
+    }
+
+    .packaging-modal.open {
+      display: flex;
+    }
+
+    .packaging-modal-inner {
+      position: relative;
+      width: 100%;
+      max-width: 560px;
+    }
+
+    .packaging-modal-close {
+      position: absolute;
+      top: -36px;
+      right: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--bone-dim);
+      padding: 8px;
+      transition: color 0.25s;
+    }
+
+    .packaging-modal-close:hover {
+      color: var(--bone);
+    }
+
+    .packaging-modal-img {
       display: block;
       width: 100%;
       height: auto;
-      border: 0.5px solid rgba(240, 234, 224, 0.12);
+      border: 0.5px solid rgba(240, 234, 224, 0.15);
     }
 
     .future-drops {
@@ -410,10 +460,9 @@
 
         <div class="shopify-buy-wrap" id="product-component-1784915563093"></div>
 
-        <div class="packaging-preview">
-          <div class="packaging-label">Full Packaging Preview</div>
-          <img class="packaging-img" src="packaging.png" alt="Did The Rain Stop? — full vinyl packaging: cover, inner sleeve, front and back panels" />
-        </div>
+        <button class="packaging-toggle" id="packagingToggle" type="button">
+          View Full Packaging Design <span class="arrow">&#8595;</span>
+        </button>
 
         <div class="future-drops">
           <div class="future-label">Stay updated on future drops</div>
@@ -438,6 +487,13 @@
   </div>
 
   <div class="bottom-mark">Felix Ames</div>
+
+  <div class="packaging-modal" id="packagingModal">
+    <div class="packaging-modal-inner">
+      <button class="packaging-modal-close" id="packagingModalClose" type="button">Close &times;</button>
+      <img class="packaging-modal-img" src="packaging.png" alt="Did The Rain Stop? — full vinyl packaging: cover, inner sleeve, front and back panels" />
+    </div>
+  </div>
 
   <script>
     // =========================================================
@@ -487,6 +543,26 @@
         if (!email) return;
         await submitSignup({ email, source: 'reunion-landing-futuredrops', btn, status });
       });
+
+      // ---- Packaging design modal ----
+      const packagingToggle = document.getElementById('packagingToggle');
+      const packagingModal  = document.getElementById('packagingModal');
+      const packagingClose  = document.getElementById('packagingModalClose');
+
+      if (packagingToggle && packagingModal) {
+        packagingToggle.addEventListener('click', () => {
+          packagingModal.classList.add('open');
+        });
+        packagingClose.addEventListener('click', () => {
+          packagingModal.classList.remove('open');
+        });
+        packagingModal.addEventListener('click', (e) => {
+          if (e.target === packagingModal) packagingModal.classList.remove('open');
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') packagingModal.classList.remove('open');
+        });
+      }
 
     });
 
